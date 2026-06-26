@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Pooling - Business Case - P1</title>
+    <!-- Librería para PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- CSS original (completo) -->
+    <style>
+        :root {
+            --primary-dark: #0a2540;
+            --primary-mid: #0d3b66;
+            --primary-light: #1a5490;
+            --accent-teal: #0891b2;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --purple: #7c3aed;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --white: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @media print {
+            * { 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+                box-sizing: border-box !important;
+            }
+
+            @page { 
+                size: A3 portrait; 
+                margin: 8mm; 
+            }
+
+            body { 
+                padding: 0 !important; 
+                font-size: 11px !important;
+                background: white !important; 
+                line-height: 1.45 !important;
+            }
+
+            .no-print, 
+            .action-buttons-container, 
+            .modal-overlay, 
+            .toast { 
+                display: none !important; 
+            }
+
+            .canvas-container { 
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 auto !important;
+                box-shadow: none !important; 
+                border: 1px solid #0a2540 !important; 
+                border-radius: 0 !important;
+                overflow: visible !important;
+            }
+
+            .header { 
+                padding: 14px 16px !important; 
+            }
+
+            .header-left h1 { 
+                font-size: 22px !important; 
+            }
+
+            .header-left .subtitle {
+                font-size: 12px !important;
+            }
+
+            .badge {
+                font-size: 9px !important;
+                padding: 4px 9px !important;
+            }
+
+            .version-info {
+                font-size: 10px !important;
+            }
+
+            .meta-info { 
+                padding: 10px 14px !important; 
+            }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 8px !important;
+            }
+
+            .meta-field label {
+                font-size: 8px !important;
+            }
+
+            .meta-field input,
+            .meta-field select {
+                font-size: 11px !important;
+                padding: 7px 8px !important;
+            }
+
+            .canvas-body { 
+                padding: 12px !important; 
+            }
+
+            .layer-title {
+                margin-top: 14px !important;
+                margin-bottom: 9px !important;
+                break-after: avoid !important;
+                page-break-after: avoid !important;
+            }
+
+            .layer-title .icon {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 16px !important;
+            }
+
+            .layer-title h2 {
+                font-size: 16px !important;
+            }
+
+            .strategic-layer, 
+            .analysis-layer, 
+            .financial-layer, 
+            .execution-layer { 
+                grid-template-columns: repeat(2, 1fr) !important; 
+                gap: 12px !important;
+                align-items: start !important;
+                margin-bottom: 18px !important;
+            }
+
+            .section { 
+                break-inside: auto !important;
+                page-break-inside: auto !important;
+                overflow: visible !important;
+                border-width: 2px !important;
+                border-radius: 7px !important;
+            }
+
+            .section-content { 
+                padding: 10px !important; 
+            }
+
+            .section-header { 
+                padding: 8px 10px !important; 
+                font-size: 10px !important;
+            }
+
+            .section-header .number {
+                width: 20px !important;
+                height: 20px !important;
+                font-size: 9px !important;
+            }
+
+            .section-hint {
+                font-size: 9px !important;
+                margin-bottom: 7px !important;
+            }
+
+            textarea,
+            input,
+            select {
+                font-size: 11px !important;
+                line-height: 1.4 !important;
+            }
+
+            textarea {
+                min-height: 100px !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            .financial-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 8px !important;
+            }
+
+            .financial-item label {
+                font-size: 8px !important;
+            }
+
+            .financial-item input,
+            .financial-item select {
+                font-size: 11px !important;
+                padding: 8px !important;
+            }
+
+            .metric-highlight {
+                padding: 12px !important;
+                margin-top: 10px !important;
+            }
+
+            .metric-highlight label {
+                font-size: 9px !important;
+            }
+
+            .metric-highlight .value {
+                font-size: 22px !important;
+            }
+
+            .benefits-container { 
+                grid-template-columns: 1fr !important;
+                gap: 8px !important; 
+            }
+
+            .benefit-category { 
+                padding: 8px !important; 
+            }
+
+            .benefit-category h5 {
+                font-size: 10px !important;
+            }
+
+            .benefit-examples {
+                font-size: 9px !important;
+            }
+
+            .benefit-category textarea {
+                min-height: 90px !important;
+                font-size: 10px !important;
+            }
+
+            .scenario-grid {
+                grid-template-columns: 1fr !important;
+                gap: 8px !important;
+            }
+
+            .scenario-card {
+                padding: 10px !important;
+            }
+
+            .scenario-card h4 {
+                font-size: 10px !important;
+            }
+
+            .scenario-card label {
+                font-size: 8px !important;
+            }
+
+            .scenario-card .auto-value {
+                font-size: 14px !important;
+                padding: 6px !important;
+            }
+
+            .value-example {
+                padding: 8px !important;
+            }
+
+            .value-example h6 {
+                font-size: 10px !important;
+            }
+
+            .value-example .example-text {
+                font-size: 10px !important;
+            }
+
+            .data-table {
+                font-size: 10px !important;
+            }
+
+            .data-table th,
+            .data-table td {
+                font-size: 9px !important;
+                padding: 5px !important;
+            }
+
+            .data-table input,
+            .data-table select {
+                font-size: 9px !important;
+                padding: 5px !important;
+            }
+
+            .approval-grid {
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+            }
+
+            .approval-section { 
+                break-inside: auto !important;
+                page-break-inside: auto !important;
+                padding: 12px !important;
+            }
+
+            .approval-card {
+                padding: 10px !important;
+            }
+
+            .approval-card h4 {
+                font-size: 11px !important;
+            }
+
+            .approval-field label {
+                font-size: 8px !important;
+            }
+
+            .approval-field input {
+                font-size: 10px !important;
+                padding: 6px !important;
+            }
+        }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0a2540, #1a5490, #0891b2);
+            padding: 12px;
+            min-height: 100vh;
+            line-height: 1.4;
+        }
+        .canvas-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-mid));
+            color: white;
+            padding: 18px 22px;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .header-left h1 { font-size: 20px; font-weight: 700; margin-bottom: 3px; }
+        .header-left .subtitle { font-size: 11px; opacity: 0.9; }
+        .framework-badges { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
+        .badge { background: rgba(255,255,255,0.15); padding: 3px 8px; border-radius: 10px; font-size: 8px; font-weight: 600; }
+        .version-info { font-size: 9px; opacity: 0.8; text-align: right; }
+        
+        .meta-info { background: var(--gray-50); padding: 12px 22px; border-bottom: 3px solid var(--primary-dark); }
+        .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+        .meta-field label { font-size: 7px; text-transform: uppercase; color: var(--primary-dark); font-weight: 700; margin-bottom: 2px; display: block; }
+        .meta-field input, .meta-field select { width: 100%; padding: 6px 8px; border: 2px solid var(--gray-200); border-radius: 4px; font-size: 10px; }
+        .meta-field input:focus, .meta-field select:focus { outline: none; border-color: var(--primary-mid); }
+        
+        .canvas-body { padding: 15px 22px; }
+        .layer-title { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 2px solid var(--gray-200); }
+        .layer-title .icon { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+        .layer-title.strategic .icon { background: linear-gradient(135deg, #0d3b66, #1a5490); color: white; }
+        .layer-title.analysis .icon { background: linear-gradient(135deg, #0891b2, #06b6d4); color: white; }
+        .layer-title.financial .icon { background: linear-gradient(135deg, #059669, #10b981); color: white; }
+        .layer-title.execution .icon { background: linear-gradient(135deg, #7c3aed, #8b5cf6); color: white; }
+        .layer-title h2 { font-size: 11px; font-weight: 700; color: var(--gray-800); text-transform: uppercase; }
+        
+        .strategic-layer, .analysis-layer, .financial-layer, .execution-layer {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 18px;
+        }
+        .section { border: 2px solid var(--gray-200); border-radius: 6px; overflow: hidden; background: white; }
+        .section:hover { border-color: var(--primary-light); box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+        .section-header { padding: 7px 9px; font-weight: 700; font-size: 8px; display: flex; align-items: center; gap: 5px; text-transform: uppercase; }
+        .section-header .number { width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; background: rgba(255,255,255,0.2); }
+        .section-header .calc-badge { margin-left: auto; background: rgba(255,255,255,0.3); padding: 1px 5px; border-radius: 6px; font-size: 6px; }
+        .strategic .section-header { background: linear-gradient(135deg, var(--primary-dark), var(--primary-mid)); color: white; }
+        .analysis .section-header { background: linear-gradient(135deg, #0891b2, #06b6d4); color: white; }
+        .financial .section-header { background: linear-gradient(135deg, #059669, #10b981); color: white; }
+        .execution .section-header { background: linear-gradient(135deg, #7c3aed, #8b5cf6); color: white; }
+        .section-content { padding: 8px; }
+        .section-hint { font-size: 7px; color: var(--gray-600); margin-bottom: 5px; font-style: italic; }
+        
+        textarea { width: 100%; padding: 6px; border: 2px solid var(--gray-200); border-radius: 4px; font-size: 9px; font-family: inherit; resize: vertical; min-height: 70px; line-height: 1.4; }
+        textarea:focus { outline: none; border-color: var(--primary-mid); }
+        textarea::placeholder { color: var(--gray-300); font-size: 8px; }
+        
+        .options-grid { display: grid; gap: 5px; }
+        .option-card { border: 2px solid var(--gray-200); border-radius: 4px; padding: 5px; background: var(--gray-50); }
+        .option-label { font-weight: 700; font-size: 8px; color: var(--primary-dark); text-transform: uppercase; margin-bottom: 3px; display: block; }
+        .option-card textarea { min-height: 35px; }
+        
+        .financial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .financial-item label { font-size: 7px; font-weight: 600; color: var(--gray-700); margin-bottom: 2px; display: block; text-transform: uppercase; }
+        .financial-item input, .financial-item select { width: 100%; padding: 5px; border: 2px solid var(--gray-200); border-radius: 4px; font-size: 10px; font-weight: 600; }
+        .financial-item input:focus, .financial-item select:focus { outline: none; border-color: var(--primary-mid); }
+        .financial-item input.auto-calc { background: #e0f2fe; border-color: #0891b2; color: #0c4a6e; cursor: not-allowed; }
+        
+        .metric-highlight { background: linear-gradient(135deg, var(--primary-dark), var(--primary-mid)); color: white; padding: 8px; border-radius: 5px; text-align: center; margin-top: 6px; }
+        .metric-highlight.success { background: linear-gradient(135deg, #059669, #10b981); }
+        .metric-highlight.auto { background: linear-gradient(135deg, #0891b2, #06b6d4); }
+        .metric-highlight label { font-size: 7px; text-transform: uppercase; opacity: 0.9; display: block; margin-bottom: 2px; }
+        .metric-highlight .value { font-size: 14px; font-weight: 700; }
+        
+        .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+        .checkbox-item { display: flex; align-items: center; gap: 3px; }
+        .checkbox-item input[type="checkbox"] { width: 11px; height: 11px; accent-color: var(--primary-mid); }
+        .checkbox-item label { font-size: 8px; }
+        
+        .benefits-container { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .benefit-category { border: 2px solid var(--gray-200); border-radius: 4px; padding: 6px; background: var(--gray-50); }
+        .benefit-category h5 { font-size: 9px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; padding-bottom: 3px; border-bottom: 2px solid currentColor; }
+        .benefit-category.financial-benefit { border-left: 3px solid var(--success); }
+        .benefit-category.financial-benefit h5 { color: var(--success); }
+        .benefit-category.strategic-benefit { border-left: 3px solid var(--primary-mid); }
+        .benefit-category.strategic-benefit h5 { color: var(--primary-mid); }
+        .benefit-category.tactical-benefit { border-left: 3px solid var(--warning); }
+        .benefit-category.tactical-benefit h5 { color: var(--warning); }
+        .benefit-category.operational-benefit { border-left: 3px solid var(--accent-teal); }
+        .benefit-category.operational-benefit h5 { color: var(--accent-teal); }
+        .benefit-examples { font-size: 7px; color: var(--gray-600); margin-bottom: 5px; background: white; padding: 4px 5px; border-radius: 3px; border: 1px dashed var(--gray-300); }
+        .benefit-examples strong { color: var(--gray-700); }
+        .benefit-category textarea { min-height: 55px; font-size: 8px; }
+        
+        .scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+        .scenario-card { border: 2px solid var(--gray-200); border-radius: 4px; padding: 6px; text-align: center; }
+        .scenario-card.pessimistic { border-color: var(--danger); background: rgba(220,38,38,0.05); }
+        .scenario-card.expected { border-color: var(--warning); background: rgba(217,119,6,0.05); }
+        .scenario-card.optimistic { border-color: var(--success); background: rgba(5,150,105,0.05); }
+        .scenario-card h4 { font-size: 8px; text-transform: uppercase; margin-bottom: 5px; font-weight: 700; }
+        .scenario-card.pessimistic h4 { color: var(--danger); }
+        .scenario-card.expected h4 { color: var(--warning); }
+        .scenario-card.optimistic h4 { color: var(--success); }
+        .scenario-card label { font-size: 6px; color: var(--gray-600); display: block; margin-bottom: 1px; text-transform: uppercase; }
+        .scenario-card .auto-value { font-size: 11px; font-weight: 700; padding: 3px; background: rgba(255,255,255,0.8); border-radius: 3px; margin-bottom: 3px; }
+        
+        .value-example { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 4px; padding: 6px; margin-bottom: 6px; }
+        .value-example h6 { font-size: 8px; color: var(--primary-mid); margin-bottom: 4px; text-transform: uppercase; }
+        .value-example .example-text { font-size: 8px; font-style: italic; color: var(--gray-600); background: white; padding: 5px; border-radius: 3px; border-left: 3px solid var(--primary-mid); line-height: 1.4; }
+        
+        .timeline-item { display: flex; align-items: center; gap: 5px; margin-bottom: 4px; }
+        .timeline-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--purple); flex-shrink: 0; }
+        .timeline-input { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+        .timeline-input input { padding: 4px; border: 1px solid var(--gray-200); border-radius: 3px; font-size: 8px; }
+        
+        .data-table { width: 100%; font-size: 8px; border-collapse: collapse; }
+        .data-table th { background: var(--gray-100); padding: 4px; text-align: left; font-size: 7px; text-transform: uppercase; }
+        .data-table td { padding: 3px; }
+        .data-table input, .data-table select { width: 100%; padding: 3px; border: 1px solid var(--gray-200); border-radius: 2px; font-size: 8px; }
+        
+        .approval-section { background: var(--gray-50); border: 2px solid var(--gray-200); border-radius: 6px; padding: 12px; margin-top: 15px; }
+        .approval-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid var(--gray-200); }
+        .approval-header h3 { font-size: 11px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; }
+        .approval-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .approval-card { background: white; border: 2px solid var(--gray-200); border-radius: 5px; padding: 8px; }
+        .approval-card h4 { font-size: 8px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; text-transform: uppercase; }
+        .approval-field { margin-bottom: 5px; }
+        .approval-field label { font-size: 6px; color: var(--gray-600); display: block; margin-bottom: 2px; text-transform: uppercase; }
+        .approval-field input { width: 100%; padding: 4px; border: 1px solid var(--gray-200); border-radius: 3px; font-size: 9px; }
+        .decision-box { display: flex; gap: 5px; margin-top: 6px; }
+        .decision-option { flex: 1; padding: 5px; border: 2px solid var(--gray-200); border-radius: 4px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .decision-option:hover { transform: translateY(-1px); }
+        .decision-option.approved { border-color: var(--success); background: rgba(5,150,105,0.1); }
+        .decision-option.deferred { border-color: var(--warning); background: rgba(217,119,6,0.1); }
+        .decision-option.rejected { border-color: var(--danger); background: rgba(220,38,38,0.1); }
+        .decision-option span { font-weight: 700; font-size: 7px; text-transform: uppercase; }
+        .decision-option.approved span { color: var(--success); }
+        .decision-option.deferred span { color: var(--warning); }
+        .decision-option.rejected span { color: var(--danger); }
+        .signature-line { border-top: 2px solid var(--gray-300); margin-top: 15px; padding-top: 4px; text-align: center; }
+        .signature-label { font-size: 6px; color: var(--gray-600); text-transform: uppercase; }
+        
+        .action-buttons-container { background: linear-gradient(135deg, var(--gray-50), var(--gray-100)); border: 2px solid var(--gray-200); border-radius: 8px; padding: 15px; margin-top: 18px; }
+        .action-buttons-header { text-align: center; margin-bottom: 10px; }
+        .action-buttons-header h3 { font-size: 12px; font-weight: 700; color: var(--primary-dark); margin-bottom: 3px; }
+        .action-buttons-header p { font-size: 9px; color: var(--gray-600); }
+        .action-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .action-btn { display: flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 50px; font-size: 11px; font-weight: 700; cursor: pointer; border: none; text-transform: uppercase; transition: all 0.3s; }
+        .action-btn:hover { transform: translateY(-2px); }
+        .btn-reset { background: linear-gradient(135deg, var(--danger), #ef4444); color: white; box-shadow: 0 4px 15px rgba(220,38,38,0.3); }
+        .btn-reset:hover { box-shadow: 0 6px 20px rgba(220,38,38,0.4); }
+        .btn-pdf { background: linear-gradient(135deg, var(--primary-dark), var(--primary-mid)); color: white; box-shadow: 0 4px 15px rgba(10,37,64,0.4); }
+        .btn-pdf:hover { box-shadow: 0 6px 20px rgba(10,37,64,0.5); }
+        .btn-icon { font-size: 13px; }
+        
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: white; border-radius: 10px; padding: 20px; max-width: 340px; width: 90%; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); animation: modalIn 0.3s ease; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-icon { font-size: 38px; margin-bottom: 8px; }
+        .modal-title { font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 5px; }
+        .modal-text { font-size: 10px; color: var(--gray-600); margin-bottom: 12px; line-height: 1.5; }
+        .modal-buttons { display: flex; gap: 8px; justify-content: center; }
+        .modal-btn { padding: 8px 18px; border-radius: 5px; font-size: 10px; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; }
+        .modal-btn-cancel { background: var(--gray-200); color: var(--gray-700); }
+        .modal-btn-cancel:hover { background: var(--gray-300); }
+        .modal-btn-confirm { background: linear-gradient(135deg, var(--danger), #ef4444); color: white; }
+        .modal-btn-confirm:hover { transform: translateY(-1px); }
+        
+        .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--success); color: white; padding: 9px 20px; border-radius: 50px; font-weight: 600; font-size: 11px; box-shadow: 0 5px 18px rgba(5,150,105,0.4); z-index: 3000; opacity: 0; transition: all 0.4s ease; display: flex; align-items: center; gap: 6px; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        
+        @media (max-width: 1200px) {
+            .strategic-layer, .analysis-layer, .financial-layer, .execution-layer { grid-template-columns: repeat(2, 1fr); }
+            .approval-grid, .benefits-container { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            body { padding: 8px; }
+            .header { padding: 12px; }
+            .header-content { flex-direction: column; text-align: center; }
+            .version-info { text-align: center; }
+            .strategic-layer, .analysis-layer, .financial-layer, .execution-layer { grid-template-columns: 1fr; }
+            .financial-grid, .checkbox-grid, .scenario-grid { grid-template-columns: 1fr; }
+            .action-buttons { flex-direction: column; align-items: center; }
+            .action-btn { width: 100%; max-width: 240px; justify-content: center; }
+            .decision-box { flex-direction: column; }
+        }
+
+        .pdf-export {
+            background: #ffffff !important;
+        }
+
+        .pdf-export .section {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .pdf-export .layer-title {
+            break-after: avoid;
+            page-break-after: avoid;
+        }
+
+        .pdf-input-value,
+        .pdf-textarea-value {
+            width: 100%;
+            min-height: 24px;
+            padding: 6px;
+            border: 2px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 9px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: #ffffff;
+            color: #1f2937;
+        }
+
+        .pdf-textarea-value {
+            min-height: 70px;
+        }
+
+        .pdf-checkbox {
+            font-size: 11px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <!-- [HTML del body original, completo, sin cambios] -->
+    <!-- MODAL -->
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal-content">
+            <div class="modal-icon">⚠️</div>
+            <h3 class="modal-title">¿Resetear Business Case?</h3>
+            <p class="modal-text">Esta acción eliminará <strong>todos los datos</strong> y no se puede deshacer.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button class="modal-btn modal-btn-confirm" onclick="confirmReset()">Sí, Resetear</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMessage">Completado</span></div>
+
+    <!-- MAIN CANVAS -->
+    <div class="canvas-container" id="canvasContainer">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>📊 BUSINESS CASE CANVAS</h1>
+                    <p class="subtitle">Framework con Cálculos Automáticos | PMI • PRINCE2 • BABOK</p>
+                    <div class="framework-badges">
+                        <span class="badge">📘 PMBOK 7th</span>
+                        <span class="badge">👑 PRINCE2</span>
+                        <span class="badge">📐 BABOK</span>
+                        <span class="badge">🔢 Auto-Cálculo</span>
+                    </div>
+                </div>
+                <div class="version-info">
+                    <p>Versión: <strong>2.2.1</strong></p>
+                    <p id="currentDate"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- META INFO -->
+        <div class="meta-info">
+            <div class="meta-grid">
+                <div class="meta-field"><label>📋 Título del Business Case</label><input type="text" id="titulo"></div>
+                <div class="meta-field"><label>🏢 Unidad de Negocio</label><input type="text" id="unidad"></div>
+                <div class="meta-field"><label>👤 Sponsor</label><input type="text" id="sponsor"></div>
+                <div class="meta-field"><label>👨‍💼 Project Manager</label><input type="text" id="pm"></div>
+                <div class="meta-field"><label>📂 Código Proyecto</label><input type="text" id="codigo"></div>
+                <div class="meta-field"><label>📊 Categoría</label><select id="categoria"><option value="">Seleccionar...</option><option>🔧 Eficiencia</option><option>📈 Crecimiento</option><option>⚖️ Cumplimiento</option><option>🏗️ Infraestructura</option><option>🔄 Transformación</option><option>🛡️ Riesgo</option></select></div>
+                <div class="meta-field"><label>🎯 Prioridad</label><select id="prioridad"><option value="">Seleccionar...</option><option>🔴 Must Have</option><option>🟠 Should Have</option><option>🟡 Could Have</option><option>🟢 Won't Have</option></select></div>
+                <div class="meta-field"><label>📅 Fecha</label><input type="date" id="fecha"></div>
+            </div>
+        </div>
+
+        <!-- CANVAS BODY -->
+        <div class="canvas-body">
+            <!-- CAPA ESTRATÉGICA -->
+            <div class="layer-title strategic"><div class="icon">🎯</div><h2>Capa Estratégica</h2></div>
+            <div class="strategic-layer">
+                <div class="section strategic">
+                    <div class="section-header"><span class="number">1</span><span>Resumen Ejecutivo</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Elevator Pitch (máx. 200 palabras)</p>
+                        <textarea id="resumen" placeholder="[PROBLEMA] En 1 oración...
+[SOLUCIÓN] En 1 oración...
+[INVERSIÓN] $___
+[BENEFICIO] $___/año
+[ROI] ___% | Payback: ___ meses
+[RECOMENDACIÓN] ✅Aprobar / ⏸️Diferir / ❌Rechazar"></textarea>
+                    </div>
+                </div>
+                <div class="section strategic">
+                    <div class="section-header"><span class="number">2</span><span>Problema / Oportunidad</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Técnica 5W2H</p>
+                        <textarea id="problema" placeholder="WHAT: ¿Cuál es el problema?
+WHY: ¿Por qué ahora?
+WHERE: ¿Dónde impacta?
+WHEN: ¿Es urgente?
+WHO: ¿A quiénes afecta?
+HOW MUCH: Impacto en $
+HOW: ¿Cómo se evidencia?"></textarea>
+                    </div>
+                </div>
+                <div class="section strategic">
+                    <div class="section-header"><span class="number">3</span><span>Alineamiento Estratégico</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Objetivos impactados</p>
+                        <div class="checkbox-grid">
+                            <div class="checkbox-item"><input type="checkbox" id="o1"><label for="o1">📈 Ingresos</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="o2"><label for="o2">💰 Costos</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="o3"><label for="o3">⭐ Cliente</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="o4"><label for="o4">⚡ Eficiencia</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="o5"><label for="o5">🛡️ Riesgos</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="o6"><label for="o6">⚖️ Compliance</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="o7"><label for="o7">🔄 Digital</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="o8"><label for="o8">👥 Talento</label></div>
+                        </div>
+                        <textarea id="alineamiento" style="margin-top:5px;min-height:40px;" placeholder="Contribución a objetivos..."></textarea>
+                    </div>
+                </div>
+                <div class="section strategic">
+                    <div class="section-header"><span class="number">4</span><span>Stakeholders</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Matriz Poder/Interés</p>
+                        <textarea id="stakeholders" placeholder="🔴 ALTO PODER/ALTO INTERÉS:
+• [Nombre] - [Rol]
+🟠 ALTO PODER/BAJO INTERÉS:
+• 
+🟡 BAJO PODER/ALTO INTERÉS:
+• 
+🟢 BAJO PODER/BAJO INTERÉS:
+• "></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAPA DE ANÁLISIS -->
+            <div class="layer-title analysis"><div class="icon">🔍</div><h2>Capa de Análisis</h2></div>
+            <div class="analysis-layer">
+                <div class="section analysis">
+                    <div class="section-header"><span class="number">5</span><span>Análisis FODA</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Contexto interno/externo</p>
+                        <textarea id="foda" placeholder="💪 FORTALEZAS:
+• 
+🌟 OPORTUNIDADES:
+• 
+⚠️ DEBILIDADES:
+• 
+🚨 AMENAZAS:
+• "></textarea>
+                    </div>
+                </div>
+                <div class="section analysis">
+                    <div class="section-header"><span class="number">6</span><span>Opciones de Solución</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Mín. 3 alternativas (PRINCE2)</p>
+                        <div class="options-grid">
+                            <div class="option-card"><span class="option-label">🔴 A: Do Nothing</span><textarea id="opcionA" placeholder="Costos de inacción..."></textarea></div>
+                            <div class="option-card"><span class="option-label">🟡 B: Do Minimum</span><textarea id="opcionB" placeholder="Solución parcial..."></textarea></div>
+                            <div class="option-card"><span class="option-label">🟢 C: Completa</span><textarea id="opcionC" placeholder="Solución integral..."></textarea></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section analysis">
+                    <div class="section-header"><span class="number">7</span><span>Opción Recomendada</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Evaluación multicriterio</p>
+                        <select id="opcionRecomendada" style="width:100%;padding:4px;margin-bottom:5px;border:1px solid var(--gray-200);border-radius:3px;font-size:9px;"><option value="">Seleccionar...</option><option>🔴 Opción A</option><option>🟡 Opción B</option><option>🟢 Opción C</option></select>
+                        <textarea id="justificacion" placeholder="CRITERIOS (1-5):
+1. Alineamiento: [ ]
+2. Factibilidad: [ ]
+3. Costo-beneficio: [ ]
+4. Riesgo: [ ]
+5. Tiempo: [ ]
+JUSTIFICACIÓN:"></textarea>
+                    </div>
+                </div>
+                <div class="section analysis">
+                    <div class="section-header"><span class="number">8</span><span>Beneficios Esperados</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 4 categorías con ejemplos</p>
+                        <div class="benefits-container">
+                            <div class="benefit-category financial-benefit">
+                                <h5>💰 Financieros</h5>
+                                <div class="benefit-examples"><strong>Ej:</strong> Reducción costos, ↑ingresos, ahorro HH, ↓multas</div>
+                                <textarea id="beneficiosFinancieros" placeholder="• Reducción costos: $___/año
+• ↑ Ingresos: $___/año
+• Ahorro HH: ___hrs = $___"></textarea>
+                            </div>
+                            <div class="benefit-category strategic-benefit">
+                                <h5>🎯 Estratégicos</h5>
+                                <div class="benefit-examples"><strong>Ej:</strong> Ventaja competitiva, market share, compliance, ESG</div>
+                                <textarea id="beneficiosEstrategicos" placeholder="• Ventaja competitiva: [Describir]
+• Market share: +___%
+• Compliance: [Normativa]"></textarea>
+                            </div>
+                            <div class="benefit-category tactical-benefit">
+                                <h5>📋 Tácticos</h5>
+                                <div class="benefit-examples"><strong>Ej:</strong> Mejor toma decisiones, dashboards, coordinación</div>
+                                <textarea id="beneficiosTacticos" placeholder="• Decisiones: [Mejora]
+• Reporting: -___% tiempo
+• Forecast: +___% precisión"></textarea>
+                            </div>
+                            <div class="benefit-category operational-benefit">
+                                <h5>⚙️ Operativos</h5>
+                                <div class="benefit-examples"><strong>Ej:</strong> ↓Tiempo ciclo, ↑productividad, automatización, SLA</div>
+                                <textarea id="beneficiosOperativos" placeholder="• Tiempo ciclo: -___%
+• Productividad: +___%
+• SLA: +___% cumplimiento"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAPA FINANCIERA -->
+            <div class="layer-title financial"><div class="icon">💰</div><h2>Capa Financiera</h2></div>
+            <div class="financial-layer">
+                <div class="section financial">
+                    <div class="section-header"><span class="number">9</span><span>Inversión Requerida</span><span class="calc-badge">🔢 AUTO</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Inversión total se calcula automáticamente</p>
+                        <div class="financial-grid">
+                            <div class="financial-item"><label>💼 CAPEX</label><input type="number" id="capex" placeholder="0" oninput="calcularTotales()"></div>
+                            <div class="financial-item"><label>🔄 OPEX/año</label><input type="number" id="opex" placeholder="0" oninput="calcularTotales()"></div>
+                            <div class="financial-item"><label>👥 RRHH</label><input type="number" id="rrhh" placeholder="0" oninput="calcularTotales()"></div>
+                            <div class="financial-item"><label>🎓 Capacitación</label><input type="number" id="capacitacion" placeholder="0" oninput="calcularTotales()"></div>
+                            <div class="financial-item"><label>🛡️ Contingencia</label><input type="number" id="contingencia" placeholder="0" oninput="calcularTotales()"></div>
+                            <div class="financial-item"><label>📊 Indirectos</label><input type="number" id="indirectos" placeholder="0" oninput="calcularTotales()"></div>
+                        </div>
+                        <div class="metric-highlight auto">
+                            <label>💵 INVERSIÓN TOTAL (Auto)</label>
+                            <div class="value">$ <span id="inversionTotal">0</span> USD</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section financial">
+                    <div class="section-header"><span class="number">10</span><span>Análisis Costo-Beneficio</span><span class="calc-badge">🔢 AUTO</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 ROI, Payback y NPV se calculan automáticamente</p>
+                        <div class="financial-grid">
+                            <div class="financial-item"><label>💵 Beneficio Anual ($)</label><input type="number" id="beneficioAnual" placeholder="0" oninput="calcularTotales()"></div>
+                            <div class="financial-item"><label>📅 Horizonte</label><select id="horizonte" onchange="calcularTotales()"><option value="3">3 años</option><option value="5" selected>5 años</option><option value="7">7 años</option></select></div>
+                            <div class="financial-item"><label>📉 Tasa Descuento %</label><input type="number" id="tasaDescuento" value="10" oninput="calcularTotales()"></div>
+                            <div class="financial-item"><label>📈 NPV (Auto)</label><input type="text" id="npvCalc" class="auto-calc" readonly></div>
+                            <div class="financial-item"><label>💹 ROI % (Auto)</label><input type="text" id="roiCalc" class="auto-calc" readonly></div>
+                            <div class="financial-item"><label>⏱️ Payback (Auto)</label><input type="text" id="paybackCalc" class="auto-calc" readonly></div>
+                        </div>
+                        <div class="metric-highlight success">
+                            <label>💰 BENEFICIO NETO (<span id="horizonteLabel">5</span> AÑOS)</label>
+                            <div class="value">$ <span id="beneficioNeto">0</span> USD</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section financial">
+                    <div class="section-header"><span class="number">11</span><span>Análisis de Valor</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Ejemplos de redacción profesional</p>
+                        <div class="value-example">
+                            <h6>📝 Ejemplo: Valor Organización</h6>
+                            <p class="example-text">"La implementación permitirá una mejora del 35% en eficiencia, liberando 2.5 FTEs para actividades estratégicas. Reducción del 45% en errores = $75,000 USD/año en ahorro."</p>
+                        </div>
+                        <div class="value-example">
+                            <h6>📝 Ejemplo: Valor Cliente</h6>
+                            <p class="example-text">"Reducción del 60% en tiempo de respuesta (de 48 a 19 horas). Incremento de 12 puntos en NPS (de 45 a 57), posicionándonos en el cuartil superior."</p>
+                        </div>
+                        <div class="value-example">
+                            <h6>📝 Ejemplo: Costo de No Hacer</h6>
+                            <p class="example-text">"Sin este proyecto: pérdidas de $180,000 USD/año por ineficiencias + riesgo ALTO de obsolescencia + pérdida del 15% de market share en 3 años."</p>
+                        </div>
+                        <textarea id="analisisValor" placeholder="VALOR ORGANIZACIÓN:
+• Eficiencia: +___% 
+• FTEs liberados: ___
+
+VALOR CLIENTE:
+• Tiempo respuesta: -___%
+• NPS: +___ puntos
+
+COSTO DE NO HACER:
+• Pérdida anual: $___
+• Riesgo: [Alto/Medio/Bajo]"></textarea>
+                    </div>
+                </div>
+                <div class="section financial">
+                    <div class="section-header"><span class="number">12</span><span>Escenarios Financieros</span><span class="calc-badge">🔢 AUTO</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Pesimista (-20%), Esperado (base), Optimista (+30%)</p>
+                        <div class="scenario-grid">
+                            <div class="scenario-card pessimistic">
+                                <h4>🔴 Pesimista (-20%)</h4>
+                                <label>ROI</label><div class="auto-value" id="roiPess">--%</div>
+                                <label>NPV</label><div class="auto-value" id="npvPess">$--</div>
+                                <label>Payback</label><div class="auto-value" id="paybackPess">-- m</div>
+                            </div>
+                            <div class="scenario-card expected">
+                                <h4>🟡 Esperado (Base)</h4>
+                                <label>ROI</label><div class="auto-value" id="roiExp">--%</div>
+                                <label>NPV</label><div class="auto-value" id="npvExp">$--</div>
+                                <label>Payback</label><div class="auto-value" id="paybackExp">-- m</div>
+                            </div>
+                            <div class="scenario-card optimistic">
+                                <h4>🟢 Optimista (+30%)</h4>
+                                <label>ROI</label><div class="auto-value" id="roiOpt">--%</div>
+                                <label>NPV</label><div class="auto-value" id="npvOpt">$--</div>
+                                <label>Payback</label><div class="auto-value" id="paybackOpt">-- m</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAPA DE EJECUCIÓN -->
+            <div class="layer-title execution"><div class="icon">🚀</div><h2>Capa de Ejecución</h2></div>
+            <div class="execution-layer">
+                <div class="section execution">
+                    <div class="section-header"><span class="number">13</span><span>Plan Implementación</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Hitos principales</p>
+                        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-input"><input id="fase1" placeholder="Fase 1"><input id="fecha1" placeholder="Fecha"></div></div>
+                        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-input"><input id="fase2" placeholder="Fase 2"><input id="fecha2" placeholder="Fecha"></div></div>
+                        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-input"><input id="fase3" placeholder="Fase 3"><input id="fecha3" placeholder="Fecha"></div></div>
+                        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-input"><input id="fase4" placeholder="Fase 4"><input id="fecha4" placeholder="Fecha"></div></div>
+                        <div class="timeline-item"><div class="timeline-dot" style="background:var(--success);"></div><div class="timeline-input"><input id="golive" placeholder="Go-Live"><input id="fechaGo" placeholder="Fecha"></div></div>
+                    </div>
+                </div>
+                <div class="section execution">
+                    <div class="section-header"><span class="number">14</span><span>Riesgos y Mitigación</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Top riesgos identificados</p>
+                        <table class="data-table">
+                            <thead><tr><th>Riesgo</th><th>Prob</th><th>Imp</th><th>Mitigación</th></tr></thead>
+                            <tbody>
+                                <tr><td><input id="riesgo1" placeholder="Riesgo 1"></td><td><select id="prob1"><option>A</option><option>M</option><option>B</option></select></td><td><select id="imp1"><option>A</option><option>M</option><option>B</option></select></td><td><input id="mit1" placeholder="Acción"></td></tr>
+                                <tr><td><input id="riesgo2" placeholder="Riesgo 2"></td><td><select id="prob2"><option>A</option><option>M</option><option>B</option></select></td><td><select id="imp2"><option>A</option><option>M</option><option>B</option></select></td><td><input id="mit2" placeholder="Acción"></td></tr>
+                                <tr><td><input id="riesgo3" placeholder="Riesgo 3"></td><td><select id="prob3"><option>A</option><option>M</option><option>B</option></select></td><td><select id="imp3"><option>A</option><option>M</option><option>B</option></select></td><td><input id="mit3" placeholder="Acción"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="section execution">
+                    <div class="section-header"><span class="number">15</span><span>Gobernanza</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Estructura de gobierno</p>
+                        <textarea id="gobernanza" placeholder="COMITÉ DIRECTIVO:
+• [Nombre] - [Rol]
+
+COMITÉ TÉCNICO:
+• [Nombre] - [Rol]
+
+REPORTES:
+• Semanal: [Qué]
+• Mensual: [Qué]
+
+ESCALAMIENTO:
+• Nivel 1: [Quién]
+• Nivel 2: [Quién]"></textarea>
+                    </div>
+                </div>
+                <div class="section execution">
+                    <div class="section-header"><span class="number">16</span><span>KPIs de Éxito</span></div>
+                    <div class="section-content">
+                        <p class="section-hint">📌 Métricas de seguimiento</p>
+                        <table class="data-table">
+                            <thead><tr><th>KPI</th><th>Actual</th><th>Meta</th></tr></thead>
+                            <tbody>
+                                <tr><td><input id="kpi1" placeholder="KPI 1"></td><td><input id="actual1" placeholder="Valor"></td><td><input id="meta1" placeholder="Objetivo"></td></tr>
+                                <tr><td><input id="kpi2" placeholder="KPI 2"></td><td><input id="actual2" placeholder="Valor"></td><td><input id="meta2" placeholder="Objetivo"></td></tr>
+                                <tr><td><input id="kpi3" placeholder="KPI 3"></td><td><input id="actual3" placeholder="Valor"></td><td><input id="meta3" placeholder="Objetivo"></td></tr>
+                                <tr><td><input id="kpi4" placeholder="KPI 4"></td><td><input id="actual4" placeholder="Valor"></td><td><input id="meta4" placeholder="Objetivo"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE APROBACIÓN -->
+            <div class="approval-section">
+                <div class="approval-header">
+                    <span style="font-size:18px;">✍️</span>
+                    <h3>Sección de Aprobación</h3>
+                </div>
+                <div class="approval-grid">
+                    <div class="approval-card">
+                        <h4>👤 Sponsor / Patrocinador</h4>
+                        <div class="approval-field"><label>Nombre Completo</label><input type="text" id="sponsorNombre"></div>
+                        <div class="approval-field"><label>Cargo</label><input type="text" id="sponsorCargo"></div>
+                        <div class="approval-field"><label>Fecha</label><input type="date" id="sponsorFecha"></div>
+                        <div class="decision-box">
+                            <div class="decision-option approved" onclick="selectDecision(this)"><span>✅ Aprobado</span></div>
+                            <div class="decision-option deferred" onclick="selectDecision(this)"><span>⏸️ Diferido</span></div>
+                            <div class="decision-option rejected" onclick="selectDecision(this)"><span>❌ Rechazado</span></div>
+                        </div>
+                        <div class="signature-line"><div class="signature-label">Firma Digital / Rúbrica</div></div>
+                    </div>
+                    <div class="approval-card">
+                        <h4>📊 PMO / Oficina de Proyectos</h4>
+                        <div class="approval-field"><label>Nombre Completo</label><input type="text" id="pmoNombre"></div>
+                        <div class="approval-field"><label>Cargo</label><input type="text" id="pmoCargo"></div>
+                        <div class="approval-field"><label>Fecha</label><input type="date" id="pmoFecha"></div>
+                        <div class="decision-box">
+                            <div class="decision-option approved" onclick="selectDecision(this)"><span>✅ Viable</span></div>
+                            <div class="decision-option deferred" onclick="selectDecision(this)"><span>⏸️ Revisar</span></div>
+                            <div class="decision-option rejected" onclick="selectDecision(this)"><span>❌ No Viable</span></div>
+                        </div>
+                        <div class="signature-line"><div class="signature-label">Firma Digital / Rúbrica</div></div>
+                    </div>
+                    <div class="approval-card">
+                        <h4>💼 Finanzas / CFO</h4>
+                        <div class="approval-field"><label>Nombre Completo</label><input type="text" id="finanzasNombre"></div>
+                        <div class="approval-field"><label>Cargo</label><input type="text" id="finanzasCargo"></div>
+                        <div class="approval-field"><label>Fecha</label><input type="date" id="finanzasFecha"></div>
+                        <div class="decision-box">
+                            <div class="decision-option approved" onclick="selectDecision(this)"><span>✅ Viable</span></div>
+                            <div class="decision-option deferred" onclick="selectDecision(this)"><span>⏸️ Revisar</span></div>
+                            <div class="decision-option rejected" onclick="selectDecision(this)"><span>❌ No Viable</span></div>
+                        </div>
+                        <div class="signature-line"><div class="signature-label">Firma Digital / Rúbrica</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTONES DE ACCIÓN -->
+            <div class="action-buttons-container">
+                <div class="action-buttons-header">
+                    <h3>🎛️ Acciones del Documento</h3>
+                    <p>Resetear formulario o exportar a PDF para impresión</p>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn btn-reset" onclick="openModal()">
+                        <span class="btn-icon">🔄</span>
+                        <span>Resetear Todo</span>
+                    </button>
+                    <button class="action-btn btn-pdf" onclick="exportarPDF()">
+                        <span class="btn-icon">📄</span>
+                        <span>Descargar PDF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    /*
+      CONFIGURACIÓN DEL BUSINESS CASE
+      Edita este bloque en VSC para dejar valores base permanentes en el HTML.
+      Si luego llenas campos en navegador, se autoguardan en localStorage.
+    */
+    const STORAGE_KEY = 'businessCaseData_P1_Mecanico_Automatico';
+
+    const DEFAULT_DATA = {
+        titulo: 'P1 - Mecánico a Automático',
+        unidad: 'IT',
+        sponsor: 'Turgay Kircar',
+        pm: 'Juan Santa Cruz',
+        codigo: '1234',
+        categoria: '🔧 Eficiencia',
+        prioridad: '🟠 Should Have',
+        fecha: '2026-06-21',
+
+        // Alineamiento preliminar para esta alternativa
+        o2: true, // Costos
+        o4: true, // Eficiencia
+        o8: true, // Talento / fatiga conductor
+
+        stakeholders:
+`🔴 ALTO PODER/ALTO INTERÉS:
+• Gerencia de Logística - responsable del leasing, renovación contractual y condiciones de flota.
+• Gerencia de Mantenimiento - responsable de costos de mantenimiento, fallas, desgaste mecánico y disponibilidad de unidades.
+• Gerencia de Operaciones y Seguridad - principales áreas usuarias de la flota en operación crítica.
+• Finanzas / Control de Gestión - validación de ahorro, costo-beneficio y presupuesto.
+
+🟠 ALTO PODER/BAJO INTERÉS:
+• Alta Dirección / Sponsor - aprobación de lineamientos, inversión y priorización.
+• Procurement / Compras - negociación con proveedor de leasing y evaluación de condiciones comerciales.
+
+🟡 BAJO PODER/ALTO INTERÉS:
+• Supervisores y jefes operativos - coordinan asignación diaria y continuidad operativa.
+• Conductores internos y externos - usuarios directos afectados por fatiga, maniobrabilidad y experiencia de conducción.
+• Responsables actuales de asignación y llaves - impactados por cambios en operación y control.
+
+🟢 BAJO PODER/BAJO INTERÉS:
+• Áreas usuarias ocasionales de la flota - impacto indirecto según frecuencia de uso y criticidad operativa.`
+    };
+
+    // Fecha actual
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = today.toLocaleDateString('es-ES', options);
+
+        aplicarDatos(DEFAULT_DATA);
+        cargarDatos();
+        inicializarAutoguardado();
+        calcularTotales();
+    });
+
+    // Aplicar datos al formulario
+    function aplicarDatos(data) {
+        Object.keys(data).forEach(key => {
+            if (key === 'decisionSelections') return;
+
+            const element = document.getElementById(key);
+            if (!element) return;
+
+            if (element.type === 'checkbox') {
+                element.checked = Boolean(data[key]);
+            } else {
+                element.value = data[key];
+            }
+        });
+
+        if (Array.isArray(data.decisionSelections)) {
+            const boxes = document.querySelectorAll('.decision-box');
+            data.decisionSelections.forEach((selectedIndex, boxIndex) => {
+                const box = boxes[boxIndex];
+                if (!box) return;
+
+                box.querySelectorAll('.decision-option').forEach(opt => opt.classList.remove('selected'));
+
+                if (selectedIndex !== null && selectedIndex >= 0) {
+                    const option = box.querySelectorAll('.decision-option')[selectedIndex];
+                    if (option) option.classList.add('selected');
+                }
+            });
+        }
+    }
+
+    // Obtener datos actuales del formulario
+    function obtenerDatos() {
+        const inputs = document.querySelectorAll('input, textarea, select');
+        const data = {};
+
+        inputs.forEach(input => {
+            if (!input.id) return;
+
+            if (input.type === 'checkbox') {
+                data[input.id] = input.checked;
+            } else {
+                data[input.id] = input.value;
+            }
+        });
+
+        data.decisionSelections = Array.from(document.querySelectorAll('.decision-box')).map(box => {
+            const options = Array.from(box.querySelectorAll('.decision-option'));
+            const selected = options.findIndex(opt => opt.classList.contains('selected'));
+            return selected >= 0 ? selected : null;
+        });
+
+        return data;
+    }
+
+    // Cargar datos desde localStorage
+    function cargarDatos() {
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        if (!savedData) return;
+
+        try {
+            const data = JSON.parse(savedData);
+            aplicarDatos(data);
+        } catch (error) {
+            console.warn('No se pudo cargar la data guardada:', error);
+            localStorage.removeItem(STORAGE_KEY);
+        }
+    }
+
+    // Guardar datos en localStorage
+    function guardarDatos() {
+        const data = obtenerDatos();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    // Autoguardado real en inputs, textareas, selects y checkboxes
+    function inicializarAutoguardado() {
+        const inputs = document.querySelectorAll('input, textarea, select');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                guardarDatos();
+                calcularTotales(false);
+            });
+
+            input.addEventListener('change', () => {
+                guardarDatos();
+                calcularTotales(false);
+            });
+        });
+    }
+
+    // Función principal de cálculos automáticos
+    function calcularTotales(debeGuardar = true) {
+        const capex = parseFloat(document.getElementById('capex').value) || 0;
+        const opex = parseFloat(document.getElementById('opex').value) || 0;
+        const rrhh = parseFloat(document.getElementById('rrhh').value) || 0;
+        const capacitacion = parseFloat(document.getElementById('capacitacion').value) || 0;
+        const contingencia = parseFloat(document.getElementById('contingencia').value) || 0;
+        const indirectos = parseFloat(document.getElementById('indirectos').value) || 0;
+
+        const inversionTotal = capex + opex + rrhh + capacitacion + contingencia + indirectos;
+        document.getElementById('inversionTotal').textContent = formatNumber(inversionTotal);
+
+        const beneficioAnual = parseFloat(document.getElementById('beneficioAnual').value) || 0;
+        const horizonte = parseInt(document.getElementById('horizonte').value) || 5;
+        const tasaDescuento = parseFloat(document.getElementById('tasaDescuento').value) || 10;
+
+        document.getElementById('horizonteLabel').textContent = horizonte;
+
+        const beneficioNeto = (beneficioAnual * horizonte) - inversionTotal;
+        document.getElementById('beneficioNeto').textContent = formatNumber(beneficioNeto);
+
+        const roi = inversionTotal > 0 ? ((beneficioAnual * horizonte - inversionTotal) / inversionTotal) * 100 : 0;
+        document.getElementById('roiCalc').value = roi.toFixed(1) + '%';
+
+        const payback = beneficioAnual > 0 ? (inversionTotal / beneficioAnual) * 12 : 0;
+        document.getElementById('paybackCalc').value = payback > 0 ? payback.toFixed(1) + ' meses' : 'N/A';
+
+        let npv = -inversionTotal;
+        const tasa = tasaDescuento / 100;
+
+        for (let t = 1; t <= horizonte; t++) {
+            npv += beneficioAnual / Math.pow(1 + tasa, t);
+        }
+
+        document.getElementById('npvCalc').value = '$ ' + formatNumber(npv);
+
+        calcularEscenarios(inversionTotal, beneficioAnual, horizonte, tasa);
+
+        if (debeGuardar) guardarDatos();
+    }
+
+    // Calcular escenarios financieros
+    function calcularEscenarios(inversion, beneficio, horizonte, tasa) {
+        const escenarios = [
+            { sufijo: 'Pess', beneficio: beneficio * 0.8 },
+            { sufijo: 'Exp', beneficio: beneficio },
+            { sufijo: 'Opt', beneficio: beneficio * 1.3 }
+        ];
+
+        escenarios.forEach(escenario => {
+            const roi = inversion > 0 ? (((escenario.beneficio * horizonte) - inversion) / inversion * 100) : 0;
+            const payback = escenario.beneficio > 0 ? (inversion / escenario.beneficio * 12) : 0;
+
+            let npv = -inversion;
+            for (let t = 1; t <= horizonte; t++) {
+                npv += escenario.beneficio / Math.pow(1 + tasa, t);
+            }
+
+            document.getElementById('roi' + escenario.sufijo).textContent = roi.toFixed(1) + '%';
+            document.getElementById('npv' + escenario.sufijo).textContent = '$ ' + formatNumber(npv);
+            document.getElementById('payback' + escenario.sufijo).textContent = payback > 0 ? payback.toFixed(0) + ' m' : 'N/A';
+        });
+    }
+
+    // Formatear números
+    function formatNumber(num) {
+        return new Intl.NumberFormat('es-ES').format(Math.round(Number(num) || 0));
+    }
+
+    // Modal functions
+    function openModal() {
+        document.getElementById('resetModal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('resetModal').classList.remove('active');
+    }
+
+    // Resetear: limpia lo escrito en navegador y restaura DEFAULT_DATA
+    function confirmReset() {
+        const inputs = document.querySelectorAll('input, textarea, select');
+
+        inputs.forEach(input => {
+            if (input.type === 'checkbox') input.checked = false;
+            else input.value = '';
+        });
+
+        document.querySelectorAll('.decision-option').forEach(opt => opt.classList.remove('selected'));
+
+        localStorage.removeItem(STORAGE_KEY);
+        aplicarDatos(DEFAULT_DATA);
+        calcularTotales(false);
+        guardarDatos();
+
+        closeModal();
+        showToast('Formulario reseteado a valores base');
+    }
+
+    // Seleccionar decisión
+    function selectDecision(element) {
+        const parent = element.parentElement;
+        parent.querySelectorAll('.decision-option').forEach(opt => opt.classList.remove('selected'));
+        element.classList.add('selected');
+        guardarDatos();
+    }
+
+    // Toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toastMessage').textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Exportar PDF funcional
+    async function exportarPDF() {
+        guardarDatos();
+        calcularTotales(false);
+
+        const original = document.getElementById('canvasContainer');
+
+            // Clonar el canvas para no alterar la pantalla real
+            const clone = original.cloneNode(true);
+            clone.id = 'canvasContainerPDF';
+            clone.classList.add('pdf-export');
+
+            // Sincronizar valores reales del formulario al clon
+            sincronizarCamposParaPDF(original, clone);
+
+            // Quitar elementos que no deben imprimirse
+            clone.querySelectorAll('.action-buttons-container, .modal-overlay, .toast').forEach(el => el.remove());
+
+            // Forzar layout estable para exportación
+            clone.style.maxWidth = '1600px';
+            clone.style.width = '1600px';
+            clone.style.overflow = 'visible';
+            clone.style.boxShadow = 'none';
+            clone.style.borderRadius = '0';
+
+            // Contenedor temporal fuera de pantalla
+            const wrapper = document.createElement('div');
+            wrapper.style.position = 'fixed';
+            wrapper.style.left = '-9999px';
+            wrapper.style.top = '0';
+            wrapper.style.width = '1600px';
+            wrapper.style.background = '#ffffff';
+            wrapper.appendChild(clone);
+            document.body.appendChild(wrapper);
+
+            const options = {
+                margin: [5, 5, 5, 5],
+                filename: 'BC-P1-Mecanico-a-Automatico.pdf',
+                image: { 
+                    type: 'png', 
+                    quality: 1
+                },
+                html2canvas: { 
+                    scale: 2.5,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: 1100,
+                    windowHeight: clone.scrollHeight
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a3', 
+                    orientation: 'portrait',
+                    compress: true
+                },
+                pagebreak: { 
+                    mode: ['css', 'legacy'],
+                    avoid: ['.section', '.approval-card', '.metric-highlight']
+                }
+            };
+
+            try {
+                await html2pdf().set(options).from(clone).save();
+                showToast('PDF descargado exitosamente');
+            } catch (error) {
+                console.error('Error al exportar PDF:', error);
+                showToast('Error al exportar PDF');
+            } finally {
+                document.body.removeChild(wrapper);
+            }
+    }
+
+    function sincronizarCamposParaPDF(original, clone) {
+        const originalFields = original.querySelectorAll('input, textarea, select');
+
+        originalFields.forEach(originalField => {
+            if (!originalField.id) return;
+
+            const clonedField = clone.querySelector('#' + CSS.escape(originalField.id));
+            if (!clonedField) return;
+
+            if (originalField.type === 'checkbox') {
+                const replacement = document.createElement('span');
+                replacement.className = 'pdf-checkbox';
+                replacement.textContent = originalField.checked ? '☑' : '☐';
+                clonedField.replaceWith(replacement);
+                return;
+            }
+
+            if (originalField.tagName.toLowerCase() === 'textarea') {
+                const replacement = document.createElement('div');
+                replacement.className = 'pdf-textarea-value';
+                replacement.textContent = originalField.value || '';
+                clonedField.replaceWith(replacement);
+                return;
+            }
+
+            if (originalField.tagName.toLowerCase() === 'select') {
+                const replacement = document.createElement('div');
+                replacement.className = 'pdf-input-value';
+                replacement.textContent = originalField.value || '';
+                clonedField.replaceWith(replacement);
+                return;
+            }
+
+            const replacement = document.createElement('div');
+            replacement.className = 'pdf-input-value';
+            replacement.textContent = originalField.value || '';
+            clonedField.replaceWith(replacement);
+        });
+    }
+
+    // Utilidad rápida para borrar memoria manualmente desde consola:
+    // localStorage.removeItem('businessCaseData_P1_Mecanico_Automatico')
+</script>
+</html>
